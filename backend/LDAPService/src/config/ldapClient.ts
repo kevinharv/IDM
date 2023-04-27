@@ -7,6 +7,8 @@ const ldapServerAddress = process.env.LDAP_ADDRESS;
 const bindDN = process.env.BIND_DN;
 const bindPW = process.env.BIND_PW;
 
+export const GlobalSearchDN = process.env.SEARCH_DN;
+
 // Create the LDAP client - 5 second timeouts
 const ldapClient: Client = new Client({
     url: "ldap://" + ldapServerAddress,
