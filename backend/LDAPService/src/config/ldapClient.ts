@@ -1,6 +1,5 @@
 import { Client } from 'ldapts';
 import logger from './logger.js';
-import { rejects } from 'assert';
 
 // Set constants from environment
 const ldapServerAddress = process.env.LDAP_ADDRESS;
