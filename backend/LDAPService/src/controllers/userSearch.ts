@@ -4,9 +4,6 @@ import { GlobalSearchDN } from "../config/ldapClient.js";
 
 /*
     Search Items
-    - displayName
-    - distinguishedName
-    - memberOf
     - Created/Changed < or > specified date
     - accountExpires before/after date
 */
@@ -46,7 +43,7 @@ export async function getUserBysAMAccountName(sAMAccountName: string) {
 }
 
 // Query for user with common name (cn)
-export async function getUserByCommonName(cn: string) {
+export async function getUsersByCommonName(cn: string) {
 
     const searchDN = GlobalSearchDN;
     // Search by userPrincipalName
@@ -63,7 +60,7 @@ export async function getUserByCommonName(cn: string) {
 }
 
 // Query for user with name
-export async function getUserByName(name: string) {
+export async function getUsersByName(name: string) {
 
     const searchDN = GlobalSearchDN;
     // Search by userPrincipalName
@@ -80,7 +77,7 @@ export async function getUserByName(name: string) {
 }
 
 // Query for user with surname
-export async function getUserBySurname(sn: string) {
+export async function getUsersBySurname(sn: string) {
 
     const searchDN = GlobalSearchDN;
     // Search by userPrincipalName
@@ -97,7 +94,7 @@ export async function getUserBySurname(sn: string) {
 }
 
 // Query for user with display name
-export async function getUserByDisplayName(displayName: string) {
+export async function getUsersByDisplayName(displayName: string) {
 
     const searchDN = GlobalSearchDN;
     // Search by userPrincipalName
@@ -127,5 +124,22 @@ export async function getUserByDN(dn: string) {
     const response = await basicLDAPSearch(searchDN, searchParams);
 
     // Return single object (because distinguishedName is unique)
+    return response;
+}
+
+// Query for user that is member of a group
+export async function getUsersByGroupMembership(groupDN: string) {
+
+    const searchDN = GlobalSearchDN;
+    // Search by userPrincipalName
+    const searchParams: SearchOptions = {
+        scope: 'sub',
+        filter: `(memberOf=${groupDN})`,
+    }
+
+    // Perform search within DN tree position with search parameters
+    const response = await basicLDAPSearch(searchDN, searchParams);
+
+    // Return array of users
     return response;
 }

@@ -1,5 +1,5 @@
-import express from "express";
-import { getUserByUPN } from "../controllers/userSearch.js";
+import express, { Response } from "express";
+import { getUserByUPN, getUsersByGroupMembership } from "../controllers/userSearch.js";
 import { DirectoryPerson } from "../utils/generators.js";
 
 // Create Express router for user routes
@@ -34,5 +34,19 @@ userRouter.get("/raw", async (req: any, res) => {
     const user = await getUserByUPN(req.query.upn);
     res.send(user);
 });
+
+userRouter.get("/member", async(req: any, res: any) => {
+    // Query for users with specified UPN
+    const users = (await getUsersByGroupMembership(req.query.group)).searchEntries;
+    // console.log(req.query.group)
+    // Create array of LDAPPerson(s)
+    let persons: LDAPPerson[] = [];
+    // Convert each search entry to LDAPPerson
+    users.forEach(entry => {
+        console.log(entry);
+        persons.push(new DirectoryPerson(entry));
+    });
+    res.send(persons);
+})
 
 export default userRouter;
